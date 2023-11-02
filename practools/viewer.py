@@ -1,18 +1,14 @@
 import os
 import math as m
 import numpy as np
-
-import bpy
-import gpu
-from gpu_extras.presets import draw_texture_2d
+import pygfx as gfx
+import wgpu
 
 class Viewer:
-    cam_target = np.array([0.0,0.0,0.0])
+    canvas = wgpu.gui.auto.WgpuCanvas()
+    renderer = gfx.WgpuRenderer(canvas)
 
-    def __init__(self,context):
-        self.context = context
-        self.nodes = dict()
-        self.run(context)
+    def __init__(self,Camera):
         pass
 
     def __del__(self):

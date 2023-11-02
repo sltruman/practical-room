@@ -20,7 +20,6 @@ class App(Gtk.Application):
     button_anchor = builder.get_object('anchor')
     area = builder.get_object('simulation')
 
-
     def __init__(self):
         super().__init__(application_id="xyz.practistyle.PracticalRoom")
         GLib.set_application_name('Practical Room')

@@ -1,23 +1,27 @@
-import bpy as b
+import pygfx as gfx
+import pybullet as bullet
+
 import numpy as np
 from scipy.spatial.transform import Rotation
 from time import time,sleep
-import json
-import os
 
-class Scene:
+class Scene(gfx.Scene):
+  base = None
+  actions = list()
+  num_frame = 0
+
   def __init__(self):
-    self.active_objs = dict()
-    self.scene_path = ''
-    self.timestep = 1/240.
-    self.actions = list()
+    super().__init__()
+    id = bullet.connect(bullet.DIRECT)
+    bullet.setPhysicsEngineParameter(erp=1,contactERP=1,frictionERP=1)
+    bullet.setGravity(0, 0, -9.81)
     
   def __del__(self):
-    del self.active_objs
+    # bullet.resetSimulation()
     pass
 
   def update(self):
-    if not self.running: return
+    self.num_frame += 1
 
     if self.actions:
         fun,args = act = self.actions[0]
@@ -25,4 +29,20 @@ class Scene:
         self.actions.pop(0)
 
     for obj in self.active_objs.values():
-      obj.update(self.timestep)
+      obj.update()
+
+    bullet.stepSimulation()
+
+  def set_base(self):
+    pass
+
+  def set_skybox(self):
+    pass
+  
+  @property
+  def base(self):
+      return self._x
+
+  @base.setter
+  def base(self, value):
+      self.base = value
